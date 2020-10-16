@@ -15,20 +15,40 @@ import Vision
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
+    // MARK: - UI Properties
     @IBOutlet weak var videoView: UIView!
     
-    // video
+    // MARK: - ML Properties
+    // Core ML model
+    typealias EstimationModel = model_cpm // model name(model_cpm) must be equal with mlmodel file name
+    
+    var request: VNCoreMLRequest!
+    var visionModel: VNCoreMLModel!
+    
+    // MARK: - AV Property
     var videoURL: URL?
-    var player: AVPlayer!
+    var player: AVPlayer?
     var avpController = AVPlayerViewController()
     
-    // gallery
+    // MARK: - Gallery Property
     let galleryPicker = UIImagePickerController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
+    
+    // MARK: - Setup Core ML
+    func setUpModel() {
+        if let visionModel = try? VNCoreMLModel(for: EstimationModel().model) {
+            self.visionModel = visionModel
+            request = VNCoreMLRequest(model: visionModel, completionHandler: visionRequestDidComplete)
+            request?.imageCropAndScaleOption = .scaleFill
+        } else {
+            fatalError("cannot load the ml model")
+        }
+    }
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL {

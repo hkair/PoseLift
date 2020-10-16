@@ -15,6 +15,7 @@
 		6CD8032725393AD600A9F585 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CD8032525393AD600A9F585 /* LaunchScreen.storyboard */; };
 		6CD8032F25393B1800A9F585 /* model_hourglass.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8032E25393B1800A9F585 /* model_hourglass.mlmodel */; };
 		6CD8033125393B2000A9F585 /* model_cpm.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8033025393B2000A9F585 /* model_cpm.mlmodel */; };
+		6CD80333253950DE00A9F585 /* DrawingJointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD80332253950DE00A9F585 /* DrawingJointView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		6CD8032825393AD600A9F585 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6CD8032E25393B1800A9F585 /* model_hourglass.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = model_hourglass.mlmodel; sourceTree = "<group>"; };
 		6CD8033025393B2000A9F585 /* model_cpm.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = model_cpm.mlmodel; sourceTree = "<group>"; };
+		6CD80332253950DE00A9F585 /* DrawingJointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingJointView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,13 +66,22 @@
 				6CD8032E25393B1800A9F585 /* model_hourglass.mlmodel */,
 				6CD8031A25393AD400A9F585 /* AppDelegate.swift */,
 				6CD8031C25393AD400A9F585 /* SceneDelegate.swift */,
-				6CD8031E25393AD400A9F585 /* ViewController.swift */,
+				6CD80334253950F000A9F585 /* Controller */,
 				6CD8032025393AD400A9F585 /* Main.storyboard */,
 				6CD8032325393AD600A9F585 /* Assets.xcassets */,
 				6CD8032525393AD600A9F585 /* LaunchScreen.storyboard */,
 				6CD8032825393AD600A9F585 /* Info.plist */,
 			);
 			path = PoseLift;
+			sourceTree = "<group>";
+		};
+		6CD80334253950F000A9F585 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6CD8031E25393AD400A9F585 /* ViewController.swift */,
+				6CD80332253950DE00A9F585 /* DrawingJointView.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,6 +157,7 @@
 			files = (
 				6CD8033125393B2000A9F585 /* model_cpm.mlmodel in Sources */,
 				6CD8031F25393AD400A9F585 /* ViewController.swift in Sources */,
+				6CD80333253950DE00A9F585 /* DrawingJointView.swift in Sources */,
 				6CD8031B25393AD400A9F585 /* AppDelegate.swift in Sources */,
 				6CD8031D25393AD400A9F585 /* SceneDelegate.swift in Sources */,
 				6CD8032F25393B1800A9F585 /* model_hourglass.mlmodel in Sources */,
