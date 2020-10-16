@@ -16,6 +16,11 @@
 		6CD8032F25393B1800A9F585 /* model_hourglass.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8032E25393B1800A9F585 /* model_hourglass.mlmodel */; };
 		6CD8033125393B2000A9F585 /* model_cpm.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8033025393B2000A9F585 /* model_cpm.mlmodel */; };
 		6CD80333253950DE00A9F585 /* DrawingJointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD80332253950DE00A9F585 /* DrawingJointView.swift */; };
+		6CD80339253A192800A9F585 /* PredictedPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD80338253A192800A9F585 /* PredictedPoint.swift */; };
+		6CD8033B253A193100A9F585 /* HeatmapPostProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8033A253A193100A9F585 /* HeatmapPostProcessor.swift */; };
+		6CD8033D253A194100A9F585 /* UIImage+CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8033C253A194100A9F585 /* UIImage+CVPixelBuffer.swift */; };
+		6CD8033F253A194900A9F585 /* MovingAverageFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD8033E253A194900A9F585 /* MovingAverageFilter.swift */; };
+		6CD80341253A225800A9F585 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD80340253A225800A9F585 /* Measure.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +35,11 @@
 		6CD8032E25393B1800A9F585 /* model_hourglass.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = model_hourglass.mlmodel; sourceTree = "<group>"; };
 		6CD8033025393B2000A9F585 /* model_cpm.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = model_cpm.mlmodel; sourceTree = "<group>"; };
 		6CD80332253950DE00A9F585 /* DrawingJointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingJointView.swift; sourceTree = "<group>"; };
+		6CD80338253A192800A9F585 /* PredictedPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PredictedPoint.swift; sourceTree = "<group>"; };
+		6CD8033A253A193100A9F585 /* HeatmapPostProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeatmapPostProcessor.swift; sourceTree = "<group>"; };
+		6CD8033C253A194100A9F585 /* UIImage+CVPixelBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+CVPixelBuffer.swift"; sourceTree = "<group>"; };
+		6CD8033E253A194900A9F585 /* MovingAverageFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovingAverageFilter.swift; sourceTree = "<group>"; };
+		6CD80340253A225800A9F585 /* Measure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +76,10 @@
 				6CD8032E25393B1800A9F585 /* model_hourglass.mlmodel */,
 				6CD8031A25393AD400A9F585 /* AppDelegate.swift */,
 				6CD8031C25393AD400A9F585 /* SceneDelegate.swift */,
+				6CD80340253A225800A9F585 /* Measure.swift */,
 				6CD80334253950F000A9F585 /* Controller */,
+				6CD8033625398B9900A9F585 /* Views */,
+				6CD80337253A18E500A9F585 /* Common */,
 				6CD8032025393AD400A9F585 /* Main.storyboard */,
 				6CD8032325393AD600A9F585 /* Assets.xcassets */,
 				6CD8032525393AD600A9F585 /* LaunchScreen.storyboard */,
@@ -79,9 +92,27 @@
 			isa = PBXGroup;
 			children = (
 				6CD8031E25393AD400A9F585 /* ViewController.swift */,
-				6CD80332253950DE00A9F585 /* DrawingJointView.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		6CD8033625398B9900A9F585 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6CD80332253950DE00A9F585 /* DrawingJointView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6CD80337253A18E500A9F585 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				6CD8033E253A194900A9F585 /* MovingAverageFilter.swift */,
+				6CD80338253A192800A9F585 /* PredictedPoint.swift */,
+				6CD8033A253A193100A9F585 /* HeatmapPostProcessor.swift */,
+				6CD8033C253A194100A9F585 /* UIImage+CVPixelBuffer.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,8 +189,13 @@
 				6CD8033125393B2000A9F585 /* model_cpm.mlmodel in Sources */,
 				6CD8031F25393AD400A9F585 /* ViewController.swift in Sources */,
 				6CD80333253950DE00A9F585 /* DrawingJointView.swift in Sources */,
+				6CD8033B253A193100A9F585 /* HeatmapPostProcessor.swift in Sources */,
+				6CD80341253A225800A9F585 /* Measure.swift in Sources */,
 				6CD8031B25393AD400A9F585 /* AppDelegate.swift in Sources */,
+				6CD80339253A192800A9F585 /* PredictedPoint.swift in Sources */,
 				6CD8031D25393AD400A9F585 /* SceneDelegate.swift in Sources */,
+				6CD8033F253A194900A9F585 /* MovingAverageFilter.swift in Sources */,
+				6CD8033D253A194100A9F585 /* UIImage+CVPixelBuffer.swift in Sources */,
 				6CD8032F25393B1800A9F585 /* model_hourglass.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,7 +341,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = J976263DN3;
+				DEVELOPMENT_TEAM = 99Z62A7755;
 				INFOPLIST_FILE = PoseLift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -323,7 +359,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = J976263DN3;
+				DEVELOPMENT_TEAM = 99Z62A7755;
 				INFOPLIST_FILE = PoseLift/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
