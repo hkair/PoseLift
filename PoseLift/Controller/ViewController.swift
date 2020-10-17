@@ -18,6 +18,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     let refreshLog = OSLog(subsystem: "com.hobink.PoseLift", category: "InferenceOperations")
     
+    public typealias DetectObjectsCompletion = ([PredictedPoint?]?, Error?) -> Void
+    
     // MARK: - UI Properties
     @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var jointView: DrawingJointView!
@@ -29,8 +31,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     // MARK: - AV Property
     var videoURL: URL?
-    var player: AVPlayer?
-    var avpController = AVPlayerViewController()
+    var player: AVPlayer!
+    var videoOutput: AVPlayerItemVideoOutput?
     
     // MARK: - Gallery Property
     let galleryPicker = UIImagePickerController()
@@ -53,11 +55,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // setup the Model
+        setUpModel()
+        
         // setup tableview datasource on bottom
         labelsTableView.dataSource = self
         
         // setup delegate for performance measurement
         👨‍🔧.delegate = self
+        
     }
     
     // MARK: - Setup Core ML
@@ -70,18 +76,78 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             fatalError("cannot load the ml model")
         }
     }
+
     
+    // MARK: - predict Video
+    func predictVideo() {
+        player.currentItem?.addObserver(
+            self,
+            forKeyPath: #keyPath(AVPlayerItem.status),
+            options: [.initial, .old, .new],
+            context: nil)
+        player.addPeriodicTimeObserver(
+          forInterval: CMTime(value: 1, timescale: 30),
+          queue: DispatchQueue(label: "videoProcessing", qos: .background),
+          using: { time in
+            self.predictUsingVision()
+        })
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+      guard let keyPath = keyPath, let item = object as? AVPlayerItem
+        else { return }
+
+      switch keyPath {
+      case #keyPath(AVPlayerItem.status):
+        if item.status == .readyToPlay {
+          self.setUpOutput()
+        }
+        break
+      default: break
+      }
+    }
+    
+    func setUpOutput() {
+      guard self.videoOutput == nil else { return }
+      let videoItem = player.currentItem!
+        if videoItem.status != AVPlayerItem.Status.readyToPlay {
+        // see https://forums.developer.apple.com/thread/27589#128476
+        return
+      }
+
+      let pixelBuffAttributes = [
+        kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange,
+        ] as [String: Any]
+
+      let videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: pixelBuffAttributes)
+      videoItem.add(videoOutput)
+      self.videoOutput = videoOutput
+    }
+
+    func getNewFrame() -> CVPixelBuffer? {
+      guard let videoOutput = videoOutput, let currentItem = player.currentItem else { return nil }
+
+      let time = currentItem.currentTime()
+      if !videoOutput.hasNewPixelBuffer(forItemTime: time) { return nil }
+      guard let buffer = videoOutput.copyPixelBuffer(forItemTime: time, itemTimeForDisplay: nil)
+        else { return nil }
+      return buffer
+    }
     
     // MARK: - SetUp Vide
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL {
-            player = AVPlayer(url: videoURL)
-            avpController = AVPlayerViewController()
-            avpController.player = player
-            avpController.view.frame = videoView.frame
-            self.addChild(avpController)
-            self.view.addSubview(avpController.view)
+        if let URL = info[UIImagePickerController.InfoKey.mediaURL] as? URL {
+            let player = AVPlayer(url: URL)
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.view.bounds
+            self.view.layer.addSublayer(playerLayer)
+            self.player = player
+            player.play()
+            
+            predictVideo()
+            isInferencing = true
         }
+        //playVideo()
         dismiss(animated: true, completion: nil)
     }
     
@@ -97,7 +163,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
 
 extension ViewController {
     // MARK: - Inferencing
-    func predictUsingVision(pixelBuffer: CVPixelBuffer) {
+    func predictUsingVision() {
+        guard let pixelBuffer = getNewFrame() else { return }
+        
         guard let request = request else { fatalError() }
         // vision framework configures the input size of image following our model's input configuration automatically
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
@@ -113,7 +181,7 @@ extension ViewController {
         if #available(iOS 12.0, *) {
             os_signpost(.event, log: refreshLog, name: "PoseEstimation")
         }
-        self.👨‍🔧.🏷(with: "endInference")
+        //self.👨‍🔧.🏷(with: "endInference")
         if let observations = request.results as? [VNCoreMLFeatureValueObservation],
             let heatmaps = observations.first?.featureValue.multiArrayValue {
 
@@ -131,31 +199,32 @@ extension ViewController {
                 filter.add(element: predictedPoint)
             }
             predictedPoints = mvfilters.map { $0.averagedValue() }
+            print(predictedPoints)
             /* =================================================================== */
 
             /* =================================================================== */
             /* ======================= display the results ======================= */
             DispatchQueue.main.sync {
-                // draw line
-                self.jointView.bodyPoints = predictedPoints
+            // draw line
+            self.jointView.bodyPoints = predictedPoints
 
-                // show key points description
-                self.showKeypointsDescription(with: predictedPoints)
+            // show key points description
+            self.showKeypointsDescription(with: predictedPoints)
 
-                // end of measure
-                // from Measure Class
-                self.👨‍🔧.🎬🤚()
-                self.isInferencing = false
-                
-                if #available(iOS 12.0, *) {
-                    os_signpost(.end, log: refreshLog, name: "PoseEstimation")
+            // end of measure
+            // from Measure Class
+            //self.👨‍🔧.🎬🤚()
+            self.isInferencing = false
+            
+            if #available(iOS 12.0, *) {
+                os_signpost(.end, log: refreshLog, name: "PoseEstimation")
                 }
             }
             /* =================================================================== */
-        } else {
+            } else {
             // end of measure
             // from Measure Class
-            self.👨‍🔧.🎬🤚()
+            //self.👨‍🔧.🎬🤚()
             self.isInferencing = false
             
             if #available(iOS 12.0, *) {

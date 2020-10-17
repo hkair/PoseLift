@@ -15,7 +15,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A0k-vA-fQN">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uhx-dc-rHw">
                                 <rect key="frame" x="0.0" y="88" width="414" height="650"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -70,7 +70,7 @@
                     <connections>
                         <outlet property="jointView" destination="Vm8-dx-wq7" id="ssd-tz-yJv"/>
                         <outlet property="labelsTableView" destination="lak-Ms-47H" id="Igk-ak-U5K"/>
-                        <outlet property="videoView" destination="A0k-vA-fQN" id="OsZ-l1-BWW"/>
+                        <outlet property="videoView" destination="Vm8-dx-wq7" id="leV-Nh-bcc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
