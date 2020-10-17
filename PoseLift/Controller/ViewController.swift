@@ -139,8 +139,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         if let URL = info[UIImagePickerController.InfoKey.mediaURL] as? URL {
             let player = AVPlayer(url: URL)
             let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = self.view.bounds
+            playerLayer.frame = self.jointView.bounds
+            playerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
             self.view.layer.addSublayer(playerLayer)
+            // bring jointView to front
+            self.view.bringSubviewToFront(jointView)
             self.player = player
             player.play()
             
